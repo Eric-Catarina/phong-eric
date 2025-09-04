@@ -16,6 +16,7 @@ public class PhongRenderer : MonoBehaviour
 
     // 
     public float tamanhoDoBrilhoEspecular = 32.0f;
+    public GameObject quadroParaRenderizar;
 
     private Camera mainCamera;
     private Texture2D renderTexture;
@@ -25,7 +26,7 @@ public class PhongRenderer : MonoBehaviour
         mainCamera = Camera.main;
         renderTexture = new Texture2D(mainCamera.pixelWidth, mainCamera.pixelHeight);
         RenderScene();
-
+        quadroParaRenderizar.GetComponent<Renderer>().material.mainTexture = renderTexture;
     }
 
     void OnGUI()
@@ -51,14 +52,14 @@ public class PhongRenderer : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    Vector3 intersectionPoint = hit.point;
+                    Vector3 pontoDeIntersecao = hit.point;
                     Vector3 normal = hit.normal;
 
-                    Color finalColor = CalculateLighting(intersectionPoint, normal);
+                    Color finalColor = CalculateLighting(pontoDeIntersecao, normal);
                     renderTexture.SetPixel(x, y, finalColor);
 
                     // Aqui ele vai desenhar um raio de debug para visualizar a normal
-                    Debug.DrawRay(intersectionPoint, normal * 0.5f, Color.green, 9999.0f);
+                    Debug.DrawRay(pontoDeIntersecao, normal * 0.5f, Color.green, 9999.0f);
                 }
                 else
                 {
